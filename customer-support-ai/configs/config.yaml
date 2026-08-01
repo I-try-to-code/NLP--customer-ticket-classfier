@@ -1,0 +1,13 @@
+artifacts_root: artifacts
+
+data_ingestion:
+    root_dir: artifacts/data_ingestion
+    source_file: data/tickers data.csv
+    local_data_file: artifacts/data_ingestion/dataset.csv
+    local_train_file: artifacts/data_ingestion/twitter_training.csv
+    local_validation_file: artifacts/data_ingestion/twitter_validation.csv
+
+data_transformation:
+    root_dir: artifacts/data_transformation
+    data_path: artifacts/data_ingestion/dataset.csv
+    transformed_data_path: artifacts/data_transformation/transformed_dataset.csv
