@@ -5,16 +5,23 @@ from src.exception import CustomException
 from src.logger import logging
 
 class TFIDFVectorizer:
-    def __init__(self):
+    def __init__(self, **kwargs):
         """
         Initialize the TF-IDF vectorizer using TfidfVectorizer.
-        lowercase=False: already handled in preprocessing.
-        max_features=None: use the full vocabulary first. We'll tune it later.
+        Accepts **kwargs to allow hyperparameter tuning dynamically.
+        If no kwargs are provided, defaults to lowercase=False, max_features=None.
         """
-        self.vectorizer = TfidfVectorizer(
-            lowercase=False,
-            max_features=None
-        )
+        if not kwargs:
+            kwargs = {
+                'lowercase': False,
+                'max_features': None
+            }
+            
+        # Ensure we always honor that text is already lowercased in our pipeline
+        if 'lowercase' not in kwargs:
+            kwargs['lowercase'] = False
+
+        self.vectorizer = TfidfVectorizer(**kwargs)
 
     def fit(self, corpus):
         """

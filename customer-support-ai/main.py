@@ -4,6 +4,10 @@ from src.exception import CustomException
 from src.config import ConfigurationManager
 from src.components.data_ingestion import DataIngestion
 from src.components.data_transformation import DataTransformation
+from src.pipeline.training_pipeline import ModelTrainingPipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 
 def main():
     try:
@@ -29,6 +33,13 @@ def main():
         
         logging.info(f"Data transformation completed. Transformed dataset saved at: {transformed_dataset_path}")
         logging.info(">>>>>> Data Transformation phase completed successfully <<<<<<\n")
+        
+        logging.info(">>>>>> Model Training phase started <<<<<<")
+        model_training = ModelTrainingPipeline(data_path=transformed_dataset_path)
+        metrics_report = model_training.run_pipeline()
+        
+        logging.info(f"Model Training completed with metrics: {metrics_report}")
+        logging.info(">>>>>> Model Training phase completed successfully <<<<<<\n")
         
     except Exception as e:
         logging.error(e)

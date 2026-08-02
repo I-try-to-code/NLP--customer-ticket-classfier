@@ -1,41 +1,51 @@
 import nltk
 from nltk.stem import WordNetLemmatizer
+from nltk.corpus import wordnet
 import sys
 from src.exception import CustomException
 
-# Ensure the required WordNet corpora are available
-try:
-    nltk.data.find('corpora/wordnet')
-except LookupError:
-    nltk.download('wordnet', quiet=True)
-
-try:
-    nltk.data.find('corpora/omw-1.4')
-except LookupError:
-    nltk.download('omw-1.4', quiet=True)
+# NLTK datasets (wordnet, omw-1.4, averaged_perceptron_tagger) are assumed to be downloaded.
+# If they are missing, run nltk.download() manually.
 
 
 class Lemmatizer:
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initialize the WordNetLemmatizer once.
         """
         self.lemmatizer = WordNetLemmatizer()
 
-    def lemmatize(self, tokens: list) -> list:
+    def _get_wordnet_pos(self, tag: str) -> str:
+        """Map NLTK POS tag to first character used by WordNetLemmatizer"""
+        tag = tag.upper()
+        if tag.startswith('J'):
+            return wordnet.ADJ
+        elif tag.startswith('V'):
+            return wordnet.VERB
+        elif tag.startswith('N'):
+            return wordnet.NOUN
+        elif tag.startswith('R'):
+            return wordnet.ADV
+        else:
+            return wordnet.NOUN # Default to noun
+
+    def lemmatize(self, tokens: list[str]) -> list[str]:
         """
         Takes a list of tokens.
-        Lemmatizes each token using WordNetLemmatizer.
-        Returns a list of lemmatized tokens.
+        Performs POS-tagging and lemmatizes each token using the corresponding WordNet tag.
+        Returns a list of POS-aware lemmatized tokens.
         """
         try:
-            if not tokens:
-                return []
-            if not isinstance(tokens, list):
+            if not tokens or not isinstance(tokens, list):
                 return []
             
-            # Lemmatize each token
-            lemmatized_tokens = [self.lemmatizer.lemmatize(token) for token in tokens]
+            pos_tags = nltk.pos_tag(tokens)
+            lemmatized_tokens = []
+            
+            for word, tag in pos_tags:
+                wn_pos = self._get_wordnet_pos(tag)
+                lemmatized_tokens.append(self.lemmatizer.lemmatize(word, pos=wn_pos))
+                
             return lemmatized_tokens
             
         except Exception as e:
