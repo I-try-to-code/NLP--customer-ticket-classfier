@@ -50,8 +50,9 @@ class ModelTrainingPipeline:
             # 1. Load Data
             logging.info(f"Loading cleaned data from {self.data_path}")
             df = pd.read_csv(self.data_path)
-            df = df.dropna(subset=['subject', 'body', 'queue'])
-            df['text'] = df['subject'] + " " + df['body']
+            # The DataTransformation component already combined 'subject' and 'body' into the 'body' column.
+            df = df.dropna(subset=['body', 'queue'])
+            df['text'] = df['body']
             
             # 2. Encode Labels
             logging.info("Encoding target labels")
@@ -84,7 +85,7 @@ class ModelTrainingPipeline:
             test_dataset = Dataset.from_dict({'text': X_test_text, 'label': y_test})
             
             def tokenize_function(examples):
-                return tokenizer(examples["text"], padding="max_length", truncation=True, max_length=128)
+                return tokenizer(examples["text"], padding="max_length", truncation=True, max_length=256)
                 
             train_tokenized = train_dataset.map(tokenize_function, batched=True)
             test_tokenized = test_dataset.map(tokenize_function, batched=True)
@@ -115,11 +116,12 @@ class ModelTrainingPipeline:
                 output_dir=os.path.join(self.artifacts_dir, "distilbert"),
                 eval_strategy="epoch",
                 save_strategy="epoch",
-                learning_rate=3e-5,
+                learning_rate=2e-5,
                 per_device_train_batch_size=16,
                 per_device_eval_batch_size=16,
                 num_train_epochs=5,
                 weight_decay=0.01,
+                warmup_ratio=0.1,
                 fp16=torch.cuda.is_available(),
                 load_best_model_at_end=True,
                 logging_dir="./logs",
@@ -135,21 +137,21 @@ class ModelTrainingPipeline:
                 compute_metrics=compute_metrics,
             )
             
-            # 9. Train
-            logging.info("Starting fine-tuning...")
-            trainer.train()
-            
-            # 10. Evaluate and Log to MLflow
-            logging.info("Evaluating on test set...")
-            predictions = trainer.predict(test_tokenized)
-            y_pred = np.argmax(predictions.predictions, axis=1)
-            
             db_path = os.path.abspath("mlflow.db")
             mlflow.set_tracking_uri(f"sqlite:///{db_path}")
             mlflow.set_experiment("Customer Support Ticket Classification")
 
             logging.info("Logging to MLflow...")
             with mlflow.start_run(run_name="DistilBERT_Pipeline"):
+                # 9. Train
+                logging.info("Starting fine-tuning...")
+                trainer.train()
+                
+                # 10. Evaluate and Log to MLflow
+                logging.info("Evaluating on test set...")
+                predictions = trainer.predict(test_tokenized)
+                y_pred = np.argmax(predictions.predictions, axis=1)
+                
                 acc = accuracy_score(y_test, y_pred)
                 prec = precision_score(y_test, y_pred, average='macro', zero_division=0)
                 rec = recall_score(y_test, y_pred, average='macro', zero_division=0)

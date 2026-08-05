@@ -4,12 +4,10 @@ import pandas as pd
 from src.logger import logging
 from src.exception import CustomException
 from src.entity import DataTransformationConfig
-from src.utils.nlp_pipeline import NLPPreprocessingPipeline
 
 class DataTransformation:
     def __init__(self, config: DataTransformationConfig):
         self.config = config
-        self.pipeline = NLPPreprocessingPipeline()
 
     def initiate_data_transformation(self):
         logging.info("Entered the data transformation component")
@@ -42,10 +40,21 @@ class DataTransformation:
             if 'subject' in df.columns:
                 df.drop(columns=['subject'], inplace=True)
             
-            logging.info("Applying full NLP preprocessing pipeline to 'body' column")
+            import re
+            import contractions
             
-            # Apply pipeline
-            df['body'] = df['body'].apply(self.pipeline.transform)
+            def basic_clean(text: str) -> str:
+                if not isinstance(text, str): return text
+                text = text.lower()
+                text = re.sub(r'<.*?>', ' ', text) # Drop HTML
+                text = re.sub(r'http\S+|www\.\S+', ' ', text) # Drop URLs
+                text = re.sub(r'\S+@\S+', ' ', text) # Drop Emails
+                text = contractions.fix(text)
+                text = text.replace('\\n', ' ').replace('\\r', ' ').replace('\\t', ' ')
+                return re.sub(r'\s+', ' ', text).strip()
+                
+            logging.info("Applying basic text cleaning (HTML/URLs) for Transformers")
+            df['body'] = df['body'].apply(basic_clean)
             
             # Save Clean Text
             df.to_csv(self.config.transformed_data_path, index=False)
