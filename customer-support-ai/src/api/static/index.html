@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Support AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=2.0">
+</head>
+<body>
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo-icon">AI</div>
+            <span class="brand-text">Nexus Support</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-view="triageView">
+                <span class="icon">📊</span> Triage Dashboard
+            </a>
+            <a href="#" class="nav-item" data-view="inboxView">
+                <span class="icon">📥</span> Inbox (3)
+            </a>
+            <a href="#" class="nav-item" data-view="analyticsView">
+                <span class="icon">📈</span> Analytics
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+        
+        <!-- Top Navigation -->
+        <header class="top-nav">
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Search tickets, customers, or queues..." class="search-input">
+            </div>
+            <div class="nav-actions">
+                <button class="action-btn">🔔</button>
+                <button class="action-btn">❓</button>
+                <button class="primary-btn new-ticket-btn">+ New Ticket</button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            <div class="page-header">
+                <div>
+                    <h1>AI Ticket Triage</h1>
+                    <p class="subtitle">Automatically route, prioritize, and draft responses for incoming tickets.</p>
+                </div>
+                <div class="status-badge">
+                    <span class="status-dot"></span> System Online
+                </div>
+            </div>
+
+            <!-- VIEWS CONTAINER -->
+            <div id="viewsContainer">
+
+                <!-- 1. TRIAGE DASHBOARD (ACTIVE) -->
+                <div id="triageView" class="view-section">
+                    <!-- The AI Application -->
+                    <div class="app-container">
+                        
+                        <!-- Input Section -->
+                        <div class="panel input-panel">
+                            <div class="panel-header">
+                                <h2>Customer Message</h2>
+                                <span class="ticket-id">#TKT-8924</span>
+                            </div>
+                            <div class="input-section">
+                                <textarea id="ticketText" rows="5" placeholder="Paste the customer's message here..."></textarea>
+                                <div class="input-actions">
+                                    <span class="hint">Shift + Enter to analyze</span>
+                                    <button id="analyzeBtn" class="primary-btn">Analyze & Draft Response</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="loadingState" class="hidden panel loading-panel">
+                            <div class="spinner"></div>
+                            <p>AI is processing ticket metrics and generating a response...</p>
+                        </div>
+
+                        <!-- Results Section -->
+                        <div id="resultsSection" class="results-section hidden">
+                            
+                            <div class="metrics-grid">
+                                <div class="metric-card panel">
+                                    <div class="metric-icon blue">📁</div>
+                                    <div class="metric-content">
+                                        <span class="metric-label">Assigned Queue</span>
+                                        <h2 id="queueResult">-</h2>
+                                    </div>
+                                </div>
+                                
+                                <div class="metric-card panel">
+                                    <div class="metric-icon red" id="priorityIcon">⚡</div>
+                                    <div class="metric-content">
+                                        <span class="metric-label">Priority Level</span>
+                                        <h2 id="priorityResult">-</h2>
+                                    </div>
+                                </div>
+                                
+                                <div class="metric-card panel">
+                                    <div class="metric-icon green">🎯</div>
+                                    <div class="metric-content">
+                                        <span class="metric-label">AI Confidence</span>
+                                        <h2 id="confidenceResult">-</h2>
+                                        <div class="progress-bar"><div id="confidenceFill" class="progress-fill"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Response Panel -->
+                            <div class="response-panel panel">
+                                <div class="response-header">
+                                    <div class="header-left">
+                                        <h2>Suggested Response</h2>
+                                        <span class="badge ai-badge">✨ Gemini 3.5 Flash</span>
+                                    </div>
+                                    <div class="actions">
+                                        <button id="copyBtn" class="icon-btn">📋 Copy Draft</button>
+                                        <button id="regenerateBtn" class="icon-btn">🔄 Regenerate</button>
+                                        <button id="editBtn" class="icon-btn">✏️ Edit</button>
+                                    </div>
+                                </div>
+                                <div class="response-content">
+                                    <textarea id="responseText" readonly></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 2. INBOX VIEW (MOCK) -->
+                <div id="inboxView" class="view-section hidden">
+                    <div class="panel mock-panel">
+                        <h2>Inbox</h2>
+                        <ul class="mock-list">
+                            <li><strong>#TKT-8925:</strong> Unable to reset password. <span class="badge blue">Technical Support</span></li>
+                            <li><strong>#TKT-8926:</strong> Refund request for order #1234. <span class="badge red">High Priority</span></li>
+                            <li><strong>#TKT-8927:</strong> Where is my package? <span class="badge green">Shipping</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 3. ANALYTICS VIEW (MOCK) -->
+                <div id="analyticsView" class="view-section hidden">
+                    <div class="metrics-grid">
+                        <div class="metric-card panel">
+                            <div class="metric-content">
+                                <span class="metric-label">Tickets Processed</span>
+                                <h2>1,432</h2>
+                            </div>
+                        </div>
+                        <div class="metric-card panel">
+                            <div class="metric-content">
+                                <span class="metric-label">Avg Confidence</span>
+                                <h2>94.2%</h2>
+                            </div>
+                        </div>
+                        <div class="metric-card panel">
+                            <div class="metric-content">
+                                <span class="metric-label">Top Queue</span>
+                                <h2>Billing</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js?v=2.0"></script>
+</body>
+</html>
