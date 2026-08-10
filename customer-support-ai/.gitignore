@@ -2,4 +2,8 @@ logs/
 __pycache__/
 artifacts/
 .venv/
+.venv312/
 *.pyc
+.env
+mlflow.db
+mlruns/
