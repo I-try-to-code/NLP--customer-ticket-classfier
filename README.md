@@ -6,8 +6,10 @@ An intelligent customer support pipeline combining **NLP intent classification**
 
 ## 📸 Demo & Screenshots
 
-(image.png)
-(image-1.png)
+![Customer Support AI Dashboard](image.png)
+
+![Ticket Classifier & Response Generator](image-1.png)
+
 
 
 ---
