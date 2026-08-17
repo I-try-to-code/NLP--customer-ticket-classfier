@@ -10,9 +10,8 @@ An intelligent customer support pipeline combining **NLP intent classification**
 
 | Screenshot Placeholder | Where to save & file name | What to capture |
 |---|---|---|
-| ![Triage Dashboard](assets/triage_dashboard.png) | `assets/triage_dashboard.png` | Main Dashboard with customer ticket input box |
-| ![Analysis & Response](assets/triage_results.png) | `assets/triage_results.png` | Results screen showing Queue, Priority, Confidence %, and AI response |
-| ![Inbox View](assets/inbox_view.png) | `assets/inbox_view.png` | The Inbox tab with active support tickets |
+| ![Triage Dashboard]![alt text](image.png) | `assets/triage_dashboard.png` | Main Dashboard with customer ticket input box |
+| ![Analysis & Response]![alt text](image-1.png) | `assets/triage_results.png` | Results screen showing Queue, Priority, Confidence %, and AI response |
 
 ---
 
