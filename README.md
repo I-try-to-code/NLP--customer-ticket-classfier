@@ -6,10 +6,12 @@ An intelligent customer support pipeline combining **NLP intent classification**
 
 ## 📸 Demo & Screenshots
 
-Main Dashboard with customer ticket input box
+### Main Dashboard with customer ticket input box
+
 ![Customer Support AI Dashboard](image.png)
 
-Results screen showing Priority, Confidence %, and AI response
+### Results screen showing Priority, Confidence %, and AI response
+
 ![Ticket Classifier & Response Generator](image-1.png)
 
 
