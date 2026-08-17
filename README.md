@@ -6,12 +6,9 @@ An intelligent customer support pipeline combining **NLP intent classification**
 
 ## 📸 Demo & Screenshots
 
-> Create an `assets/` folder in the root directory, save your screenshots there, and replace the placeholder files below:
+(image.png)
+(image-1.png)
 
-| Screenshot Placeholder | Where to save & file name | What to capture |
-|---|---|---|
-| ![Triage Dashboard]![alt text](image.png) | `assets/triage_dashboard.png` | Main Dashboard with customer ticket input box |
-| ![Analysis & Response]![alt text](image-1.png) | `assets/triage_results.png` | Results screen showing Queue, Priority, Confidence %, and AI response |
 
 ---
 
