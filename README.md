@@ -1,10 +1,10 @@
-# 🎫 Enterprise AI Support Ticket Classifier & Response Generator
+# Enterprise AI Support Ticket Classifier & Response Generator
 
 An intelligent customer support pipeline combining **NLP intent classification** (DistilBERT + LinearSVC) with **generative response drafting** (Gemini 3.5 Flash) wrapped in a modern dashboard interface.
 
 ---
 
-## 📸 Demo & Screenshots
+## Demo & Screenshots
 
 ### Main Dashboard with customer ticket input box
 
@@ -18,7 +18,7 @@ An intelligent customer support pipeline combining **NLP intent classification**
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 Customer Ticket ──► Classifier (DistilBERT + LinearSVC) ──► Queue, Priority, Confidence
@@ -29,7 +29,7 @@ Suggested Response ◄── Gemini 3.5 Flash ◄── Prompt Builder ───
 
 ---
 
-## ⚡ Quickstart
+## Quickstart
 
 ```bash
 # 1. Clone & enter directory
@@ -54,7 +54,7 @@ Open **`http://127.0.0.1:8000`** in your browser.
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Department Classifier**: Fine-tuned DistilBERT (PyTorch / HuggingFace)
 - **Priority Classifier**: LinearSVC + TF-IDF (scikit-learn)
